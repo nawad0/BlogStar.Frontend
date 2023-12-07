@@ -1,0 +1,28 @@
+/* CreateArticle.css */
+
+.create-article-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.content-preview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    min-height: 100px;
+}
+
+.create-article-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+    .create-article-button:hover {
+        background-color: #0056b3;
+    }

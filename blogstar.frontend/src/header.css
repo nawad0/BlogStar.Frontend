@@ -1,0 +1,48 @@
+.main-header {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #4b4848;
+    color: #fff;
+    padding: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    margin: 0;
+}
+
+.header-nav {
+    display: flex;
+}
+
+.nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-item {
+    margin-right: 20px;
+}
+
+    .nav-item a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .nav-item a:hover {
+            text-decoration: underline;
+        }
