@@ -9,6 +9,8 @@ import Header from './Header.jsx';
 import CreateArticle from './CreateArticle.jsx';
 import BlogArticles from './BlogArticles.jsx'
 import Article from './Article.jsx'
+import AllArticles from "./AllArticles.jsx";
+import FavoriteArticles from './components/FavoriteArticles.jsx';
 
 const App = () => {
 
@@ -20,16 +22,18 @@ const App = () => {
             <Header></Header>
             {data ?
                 <Routes>
-
+                    
                     <Route path="/create" element={<CreateBlogPage />} />
+                    <Route path="/all-articles" element={<AllArticles />} />
+                    <Route path="/fav" element={<FavoriteArticles />} />
                     <Route path="/create-article/:blogId" element={<CreateArticle></CreateArticle>}></Route>
                     <Route path="/edit" element={<EditBlogPage />} />
-                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/" element={<Blog />} />
                     <Route path="/articles/:blogId" element={<BlogArticles />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/article/:articleId" element={<Article />} />
-                    <Route path="/" element={<Register />} />
-                    <Route path="*" element={<Navigate to="/blog" />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
                 :
                 <Routes>

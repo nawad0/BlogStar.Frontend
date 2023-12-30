@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import "./blog-edit.css"
-const EditBlogPage = () => {
+const EditBlogPage = ({ id,create}) => {
     const [blogData, setBlogData] = useState({
         title: '',
         description: '',
@@ -11,6 +11,7 @@ const EditBlogPage = () => {
     const [jwtToken, setJwtToken] = useState('');
 
     useEffect(() => {
+        console.log(id);
         const storedToken = localStorage.getItem('jwtToken');
         if (storedToken) {
             setJwtToken(storedToken);
@@ -19,9 +20,9 @@ const EditBlogPage = () => {
 
         const fetchBlog = async () => {
             try {
-                const storedId = localStorage.getItem('blogid');
-                console.log(storedId);
-                const response = await fetch(`/api/Blogs/${storedId}`);
+                
+                console.log(id);
+                const response = await fetch(`/api/Blogs/${id}`);
                 const data = await response.json();
                 console.log(data);
 
@@ -44,7 +45,7 @@ const EditBlogPage = () => {
         };
 
         fetchBlog();
-    }, []);
+    }, [id]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -57,7 +58,7 @@ const EditBlogPage = () => {
         try {
             const storedId = localStorage.getItem('blogid');
      
-            const response = await fetch(`/api/Blogs/${storedId}`, {
+            const response = await fetch(`/api/Blogs/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,7 +70,7 @@ const EditBlogPage = () => {
            
             console.log('Blog updated successfully');
             console.log(blogData);
-            window.location.href = 'blog';
+            create();
             // Дополнительные действия после успешного обновления блога
 
         } catch (error) {

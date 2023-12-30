@@ -1,7 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./blog-create.css"
 
-const CreateBlogPage = () => {
+const CreateBlogPage = ({create}) => {
     const [blogData, setBlogData] = useState({
         title: '',
         description: '',
@@ -9,22 +10,22 @@ const CreateBlogPage = () => {
     });
     const [redirectTo, setRedirectTo] = useState(null);
     const [blogs, setBlogs] = useState([]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setBlogData({ ...blogData, [name]: value });
     };
-        useEffect(() => {
+
+    useEffect(() => {
         if (redirectTo) {
             window.location.href = redirectTo;
         }
-       
-       
     }, [redirectTo]);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         console.log(blogData);
-      
+
         try {
             const storedToken = localStorage.getItem('jwtToken');
             const response = await fetch('/api/Blogs', {
@@ -48,6 +49,7 @@ const CreateBlogPage = () => {
                 description: '',
                 // Add other blog properties as needed
             });
+            create()
         } catch (error) {
             console.error('Error creating a new blog:', error.message);
             // Handle error, e.g., display an error message to the user
@@ -55,40 +57,41 @@ const CreateBlogPage = () => {
     };
 
     return (
-        <form className="blog-form" onSubmit={handleFormSubmit}>
-            <label htmlFor="title" className="form-label">
-                Title:
-            </label>
-            <input
-                type="text"
-                id="title"
-                name="title"
-                value={blogData.title}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-            />
+        <div className="container mt-5">
+            <form onSubmit={handleFormSubmit}>
+                <div className="mb-3">
+                    <label htmlFor="title" className="form-label">Title:</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={blogData.title}
+                        onChange={handleInputChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
 
-            <label htmlFor="description" className="form-label">
-                Description:
-            </label>
-            <textarea
-                id="description" 
-                name="description"
-                value={blogData.description}
-                onChange={handleInputChange}
-                className="form-textarea"
-                required
-            />
+                <div className="mb-3">
+                    <label htmlFor="description" className="form-label">Description:</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={blogData.description}
+                        onChange={handleInputChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
 
-            {/* Add other form fields as needed */}
+                {/* Add other form fields as needed */}
 
-            <button type="submit" className="form-button">
-                Create Blog
-            </button>
-        </form>
+                <button type="submit" className="btn btn-primary">
+                    Create Blog
+                </button>
+            </form>
+        </div>
     );
-
 };
 
 export default CreateBlogPage;

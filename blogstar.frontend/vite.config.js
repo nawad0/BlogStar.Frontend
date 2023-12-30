@@ -46,10 +46,6 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/api/secure/secure-data': {
-                target: 'https://localhost:7031/',
-                secure: false
-            },
             '^/auth': {
                 target: 'https://localhost:7031/',
                 secure: false
@@ -59,6 +55,22 @@ export default defineConfig({
                 secure: false
             },
             '^/api/articles': {
+                target: 'https://localhost:7031/',
+                secure: false
+            },
+            '^/api/comments': {
+                target: 'https://localhost:7031/',
+                secure: false
+            },
+              '^/api/Articles/add': {
+                target: 'https://localhost:7031/',
+                secure: false
+            },
+            '^/api/Articles/checklike': {
+                target: 'https://localhost:7031/',
+                secure: false
+            },
+            '^/auth/favorite-articles': {
                 target: 'https://localhost:7031/',
                 secure: false
             },

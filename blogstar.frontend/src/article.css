@@ -1,41 +1,100 @@
-﻿/* Style for the container of the article list */
-.article-list-container {
+﻿.container {
+    max-width: 1000px;
+    margin: 20px auto;
+}
+/* Add this CSS to your stylesheets */
+
+
+.articleListWrapper {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: flex-start;
+   
+    margin-top: 20px; /* Adjust as needed for spacing */
 }
-.article-card-link {
+
+.articleList {
+    /* Your existing article list styles go here */
+    flex-grow: 1; /* Allow the article list to take remaining space */
+}
+
+.separator {
+/* Adjust the color and style as needed */
+    height: 100%; /* Match the height of the article list */
+    margin: 0 20px; /* Adjust as needed for spacing */
+}
+
+.sortOptions,
+.searchBar {
+
+    /* Your existing sorting and search bar styles go here */
+    margin-top: 20px; /* Adjust as needed for spacing */
+}
+
+
+.pageTitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.blogInfo {
     text-decoration: none;
-    color: inherit; /* Чтобы ссылка наследовала цвет текста от родительского элемента */
+}
+.loading {
+    font-size: 1.2rem;
+    margin-top: 20px;
 }
 
-/* Style for each individual article card */
-.article-card {
-    background-color: #fff;
+.articleList {
+    display: flex;
+    flex-direction: column;
+}
+
+.articleLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.articleItem {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 300px;
-    transition: transform 0.3s ease-in-out;
-    /* Add more styles as needed */
+    overflow: hidden;
+}
+.articleInfo {
+    flex-grow: 1;
+    padding: 15px;
+   
 }
 
-/* Style for the article title */
-.article-title {
-    color: #333;
+.articleThumbnail {
+    width: 150px;
+    float: right;
+    height: 150px;
+    padding: 10px; /* Adjust this value as needed for the desired spacing */
+    margin-left: auto; /* Push the thumbnail to the right */
+}
+
+    .articleThumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.articleTitle {
     font-size: 1.5rem;
     margin-bottom: 10px;
 }
 
-/* Style for the article content */
-.article-content {
-    color: #666;
+.articleAuthor,
+.articleDate {
     font-size: 1rem;
-    line-height: 1.5;
+    margin-bottom: 5px;
+    color: #888;
 }
 
-/* Hover effect for the article card */
-.article-card:hover {
-    transform: scale(1.05);
+.articleContent {
+    margin-top: 10px;
+    color: #333;
 }

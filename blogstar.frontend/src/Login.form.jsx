@@ -78,7 +78,7 @@ const Login = () => {
                 </form>
 
                 <p className="form-link">
-                    <Link to="/">Если вы не зарегистрированы, то зарегистрируйтесь</Link>
+                    <Link to="/register">Если вы не зарегистрированы, то зарегистрируйтесь</Link>
                 </p>
             </div>
         </div>

@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import "./article.css";
+import './article.css'; // Import styles from the first page
 
 const YourComponent = () => {
     const [articles, setArticles] = useState([]);
@@ -14,7 +14,7 @@ const YourComponent = () => {
                 const response = await fetch(`/api/articles/blog-articles?blogId=${blogId}`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${storedToken}`,
+                        Authorization: `Bearer ${storedToken}`,
                     },
                 });
 
@@ -32,23 +32,32 @@ const YourComponent = () => {
         fetchData();
     }, [blogId]);
 
-    // Функция для обрезки текста и добавления троеточия
+    // Function to truncate text and add ellipsis
     const truncateText = (text, maxLength) => {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
 
     return (
-        <div className="article-list-container">
-            {articles.map((article) => (
-                <Link to={`/article/${article.articleId}`} key={article.articleId} className="article-card-link">
-                    <div className="article-card">
-                        <h3 className="article-title">{article.title}</h3>
-                        <p className="article-content">{truncateText(article.content, 20)}</p>
-                        {/* Render other properties of the article as needed */}
-                    </div>
-                </Link>
-            ))}
-        </div>
+        <>
+            <Link to={`/create-article/${blogId}`} className="blog-title">
+                Создать статью
+            </Link>
+            <div className="articleListWrapper"> {/* Use the wrapper class from the first page */}
+                <div className="articleList">
+                    {articles.map((article) => (
+                        <Link to={`/article/${article.articleId}`} key={article.articleId} className="articleLink">
+                            <div className="articleItem">
+                                <div className="articleInfo">
+                                    <h3 className="articleTitle">{article.title}</h3>
+                                    <p className="articleContent">{truncateText(article.content, 20)}</p>
+                                    {/* Render other properties of the article as needed */}
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </>
     );
 };
 
