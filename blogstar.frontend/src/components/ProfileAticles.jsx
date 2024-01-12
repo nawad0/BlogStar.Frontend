@@ -3,21 +3,12 @@ import axios from 'axios';
 import { Divider, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
 import ArticleList from './ArticleList';
 
-const FavoriteArticles = () => {
+const ProfileAticles = () => {
     const [favoriteArticles, setFavoriteArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [button, setButton] = useState(true);
-    const [sortedArticles, setSortedArticles] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('date'); // 'date' or 'title'
+    
 
-    const handleSortChange = (value) => {
-        setSortBy(value);
-    };
-
-    const handleSearchChange = (value) => {
-        setSearchQuery(value);
-    };
     const likesAmount = (likesJson) => {
         try {
             // Преобразование строки JSON в объект JavaScript
@@ -35,29 +26,6 @@ const FavoriteArticles = () => {
             // Обработка ошибок при парсинге JSON
             return 'Error parsing JSON: ' + error.message;
         }
-    };
-
-    const sortAndFilterArticles = (articlesToSort, sortBy, searchQuery) => {
-        let filteredArticles = [...articlesToSort];
-
-        // Filter by search query
-        if (searchQuery) {
-            const lowerCaseQuery = searchQuery.toLowerCase();
-            filteredArticles = filteredArticles.filter(
-                (article) =>
-                    article.title.toLowerCase().includes(lowerCaseQuery) ||
-                    article.content.toLowerCase().includes(lowerCaseQuery)
-            );
-        }
-
-        // Sort
-        if (sortBy === 'date') {
-            filteredArticles.sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate));
-        } else if (sortBy === 'title') {
-            filteredArticles.sort((a, b) => a.title.localeCompare(b.title));
-        }
-
-        setSortedArticles(filteredArticles);
     };
 
     // Define the extractImage function
@@ -96,7 +64,7 @@ const FavoriteArticles = () => {
                 });
 
                 setFavoriteArticles(response.data);
-                sortAndFilterArticles(response.data, sortBy, searchQuery);
+               
             } catch (error) {
                 console.error('Error fetching favorite articles:', error.response?.data || error.message);
             } finally {
@@ -105,7 +73,7 @@ const FavoriteArticles = () => {
         };
 
         fetchFavoriteArticles();
-    }, [sortBy, searchQuery, button]);
+    }, [button]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -113,31 +81,9 @@ const FavoriteArticles = () => {
 
     return (
         <div>
-            <Divider />
-            <div className="sortOptions">
-                <FormControl variant="standard" style={{ marginRight: 20 }}>
-                    <InputLabel>Sort by</InputLabel>
-                    <Select
-                        value={sortBy}
-                        onChange={(e) => handleSortChange(e.target.value)}
-                        label="Sort by"
-                    >
-                        <MenuItem value="date">Date</MenuItem>
-                        <MenuItem value="title">Title</MenuItem>
-                    </Select>
-                </FormControl>
-            </div>
-            <div className="searchBar">
-                <TextField
-                    label="Search"
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    variant="standard"
-                />
-            </div>
             <ArticleList
-                articles={sortedArticles}
+                articles={favoriteArticles}
+                favorite={favoriteArticles}
                 setButton={setButton}
                 truncateText={truncateText}
                 extractImage={extractImage}
@@ -148,4 +94,4 @@ const FavoriteArticles = () => {
     );
 };
 
-export default FavoriteArticles;
+export default ProfileAticles;

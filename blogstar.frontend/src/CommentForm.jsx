@@ -1,6 +1,17 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { Form, Button, ListGroup } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+    Container,
+    List,
+    ListItem,
+    ListItemAvatar,
+    Avatar,
+    ListItemText,
+    Typography,
+    Divider,
+    TextField,
+    FormGroup,
+    Button,
+} from '@mui/material';
 
 const CommentForm = ({ articleId }) => {
     const [commentData, setCommentData] = useState({
@@ -28,7 +39,7 @@ const CommentForm = ({ articleId }) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${storedToken}`, // Replace with your actual auth token
+                    Authorization: `Bearer ${storedToken}`, // Replace with your actual auth token
                 },
                 body: JSON.stringify(commentData),
             });
@@ -65,7 +76,7 @@ const CommentForm = ({ articleId }) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${storedToken}`,
+                    Authorization: `Bearer ${storedToken}`,
                 },
             });
 
@@ -75,6 +86,7 @@ const CommentForm = ({ articleId }) => {
 
             const data = await response.json();
             setComments(data);
+            console.log(data);
             setError(null); // Reset error if fetching is successful
         } catch (error) {
             console.error('Error fetching comments:', error.message);
@@ -90,40 +102,52 @@ const CommentForm = ({ articleId }) => {
     }, [articleId]);
 
     return (
-        <div>
+        <Container>
+            <Typography variant="h4" gutterBottom>
+                Comments
+            </Typography>
 
-            <h2>Comments</h2>
-            <ListGroup>
+            <List sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper' }}>
                 {comments.map((comment) => (
-                    <ListGroup.Item key={comment.commentId}>{comment.text}</ListGroup.Item>
-                    // Add other comment properties as needed
+                    <React.Fragment key={comment.commentId}>
+                        <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                                <Avatar src={`  ${comment.authorImagePath}`} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={comment.authorName}
+                                secondary={comment.text}
+                            />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                    </React.Fragment>
                 ))}
-            </ListGroup>
+            </List>
 
-            <Form onSubmit={handleFormSubmit}>
-                <Form.Group controlId="text">
-                    <Form.Label>Comment:</Form.Label>
-                    <Form.Control
-                        as="textarea"
+            <form onSubmit={handleFormSubmit}>
+                <FormGroup>
+                    <TextField
+                        label="Comment"
+                        multiline
+                        rows={4}
+                        variant="outlined"
                         name="text"
                         value={commentData.text}
                         onChange={handleInputChange}
                         required
                     />
-                </Form.Group>
+                </FormGroup>
 
                 {/* Add other form fields as needed */}
 
-                <Button type="submit" variant="primary" style={{ marginTop: '10px' }}>
+                <Button type="submit" variant="contained" color="primary" style={{ marginTop: '10px' }}>
                     Post Comment
                 </Button>
-            </Form>
+            </form>
 
-            {loading && <p>Loading comments...</p>}
-            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-
-           
-        </div>
+            {loading && <Typography>Loading comments...</Typography>}
+            {error && <Typography style={{ color: 'red' }}>Error: {error}</Typography>}
+        </Container>
     );
 };
 

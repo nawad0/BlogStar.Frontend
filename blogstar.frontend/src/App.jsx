@@ -11,6 +11,9 @@ import BlogArticles from './BlogArticles.jsx'
 import Article from './Article.jsx'
 import AllArticles from "./AllArticles.jsx";
 import FavoriteArticles from './components/FavoriteArticles.jsx';
+import EditArticle from './EditArticle.jsx';
+import Profile from './Profile.jsx';
+
 
 const App = () => {
 
@@ -33,6 +36,8 @@ const App = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/article/:articleId" element={<Article />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/edit-article/:id" element={<EditArticle />} />
+                    <Route path="/profile" element={<Profile />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
                 :

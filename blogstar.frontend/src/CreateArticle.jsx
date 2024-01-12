@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './CreateArticle.css'; // Include your custom styles
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
+import imageCompression from 'browser-image-compression';
 const CreateArticle = () => {
     const { blogId } = useParams();
     const [articleData, setArticleData] = useState({
@@ -12,6 +12,46 @@ const CreateArticle = () => {
         content: '',
     });
 
+    const compressImages = async (htmlContent) => {
+        const doc = new DOMParser().parseFromString(htmlContent, 'text/html');
+        const images = doc.querySelectorAll('img');
+
+        for (let img of images) {
+            // Преобразование изображения в Blob для сжатия
+            const response = await fetch(img.src);
+            const blob = await response.blob();
+
+            // Настройки сжатия
+            const options = {
+                maxSizeMB: 0.1, // Максимальный размер в MB
+                maxWidthOrHeight: 1920, // Максимальная ширина или высота
+                useWebWorker: true,
+            };
+
+            // Сжатие изображения
+            const compressedBlob = await imageCompression(blob, options);
+            const compressedFile = new File([compressedBlob], 'image.jpg', { type: 'image/jpeg' });
+
+            // Чтение сжатого изображения в формате base64
+            const base64String = await readImageAsBase64(compressedFile);
+
+            // Обновление src изображения
+            img.src = `data:${compressedFile.type};base64,${base64String}`;
+        }
+
+        return doc.body.innerHTML;
+    };
+
+    const readImageAsBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                resolve(reader.result.split(',')[1]);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setArticleData({ ...articleData, [name]: value });
@@ -24,6 +64,9 @@ const CreateArticle = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+        // Сначала сжимаем изображения
+        const compressedContent = await compressImages(articleData.content);
+
         try {
             const storedToken = localStorage.getItem('jwtToken');
             const response = await fetch(`/api/articles/?blogId=${blogId}`, {
@@ -32,7 +75,7 @@ const CreateArticle = () => {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${storedToken}`,
                 },
-                body: JSON.stringify({ ...articleData, contentHtml: articleData.content }),
+                body: JSON.stringify({ ...articleData, content: compressedContent }),
             });
 
             const newArticle = await response.json();
@@ -42,7 +85,7 @@ const CreateArticle = () => {
             console.error('Error creating a new article:', error.message);
         }
     };
-
+    
     // Define modules and formats for ReactQuill
     // ... (previous code)
 
@@ -78,7 +121,7 @@ const CreateArticle = () => {
     ];
 
     return (
-        <div className="container mt-5">
+        <div className="container_a mt-5">
             <form onSubmit={handleFormSubmit}>
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">Title:</label>

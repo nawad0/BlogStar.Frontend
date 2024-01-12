@@ -74,6 +74,10 @@ export default defineConfig({
                 target: 'https://localhost:7031/',
                 secure: false
             },
+            '^api/userModels/': {
+                target: 'https://localhost:7031/',
+                secure: false
+            },
 
         },
         port: 5173,

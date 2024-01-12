@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\components\hooks\" />
+    <Folder Include="src\components\profile\" />
   </ItemGroup>
 </Project>

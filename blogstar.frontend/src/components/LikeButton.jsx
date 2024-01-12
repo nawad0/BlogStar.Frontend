@@ -1,14 +1,16 @@
-// LikeButton.js
-
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
-const LikeButton = ({ articleId, setButton}) => {
+import axios from 'axios';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
+const LikeButton = ({ articleId, setButton }) => {
     const [isLiked, setIsLiked] = useState(false);
 
     const handleLike = async () => {
         const storedToken = localStorage.getItem('jwtToken');
         try {
-            setButton(true)
+            setButton(true);
             const response = await fetch(`/api/Articles/add?articleId=${articleId}`, {
                 method: 'POST',
                 headers: {
@@ -17,18 +19,16 @@ const LikeButton = ({ articleId, setButton}) => {
                     // Include any additional headers if needed
                 },
             });
-           
+
             if (!response.ok) {
                 throw new Error(`Failed to add like - ${response.status} ${response.statusText}`);
             }
-            setButton(false)
+            setButton(false);
             setIsLiked(!isLiked); // Toggle like state
         } catch (error) {
             console.error('Error adding like:', error.message);
         }
     };
-
-    
 
     const checkLikeStatus = async () => {
         try {
@@ -55,13 +55,9 @@ const LikeButton = ({ articleId, setButton}) => {
     }, []);
 
     return (
-        <div onClick={handleLike} className={isLiked ? 'liked' : ''}>
-            {isLiked ? (
-                <img src="src/assets/like.svg" alt="Unlike Icon" />
-            ) : (
-                <img src="src/assets/nonlike.svg" alt="Like Icon" />
-            )}
-        </div>
+        <IconButton onClick={handleLike} color={isLiked ? 'secondary' : 'default'}>
+            {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        </IconButton>
     );
 };
 

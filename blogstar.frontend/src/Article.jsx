@@ -1,8 +1,9 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CommentForm from './CommentForm';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Card } from 'react-bootstrap'; // Import Bootstrap components
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // import styles
+import { Typography, CircularProgress, Container } from '@mui/material'; // Import Material-UI components
 
 const ArticlePage = () => {
     const [article, setArticle] = useState(null);
@@ -26,22 +27,22 @@ const ArticlePage = () => {
     }, [articleId]);
 
     return (
-        <Container>
+        <Container sx={{ marginTop: 4, marginBottom: 4, padding: 3 }}>
             {article ? (
-                <Row>
-                    <Col>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title>{article.title}</Card.Title>
-                                <Card.Text dangerouslySetInnerHTML={{ __html: article.contentHtml }} />
-                                {/* Render other properties of the article as needed */}
-                            </Card.Body>
-                        </Card>
-                        <CommentForm articleId={articleId} />
-                    </Col>
-                </Row>
+                <div>
+                    <Typography variant="h4" gutterBottom>
+                        {article.title}
+                    </Typography>
+                    <ReactQuill
+                        value={article.content}
+                        readOnly={true}
+                        theme={"bubble"} // You can choose "snow" for a different style
+                        style={{ marginTop: '1rem' }}
+                    />
+                    <CommentForm articleId={articleId} />
+                </div>
             ) : (
-                <p>Loading...</p>
+                <CircularProgress sx={{ marginTop: 4 }} />
             )}
         </Container>
     );

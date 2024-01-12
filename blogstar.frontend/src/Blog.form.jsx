@@ -1,7 +1,4 @@
-﻿import { TransitionGroup, CSSTransition } from 'react-transition-group';
-
-
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
 import './blog.css';
@@ -9,6 +6,20 @@ import CreateBlogPage from './CreateBlogPage';
 import MyModal from './components/UI/MyModal/MyModal';
 import EditBlogPage from './EditBlogPage';
 
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 const Blog = () => {
     const [userBlogs, setUserBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -96,43 +107,51 @@ const Blog = () => {
     return (
         <animated.div style={fadeIn} className="blog-container">
             <header className="blog-header">
-                <div className="logo">wooow let go</div>
-                <button className="create-post-btn" onClick={() => setModalCreate(true)}>
-                    Create a Post
-                </button>
+                <div className="logo">My Blog</div>
+                <button className="create-post-btn" onClick={() => setModalCreate(true)}>Create a Post</button>
             </header>
 
             <div className="blog-list">
                 {userBlogs.map((blog) => (
-                    <div key={blog.blogId} className="blog-item">
-                        <Link to={`/articles/${blog.blogId}`} style={{ textDecoration: 'none' }}>
-                            <div className="blog-content">
-                                {/* Placeholder image from Placeholder.com with dimensions 100x100 */}
-                                <div className="blog-thumbnail">
-                                    <img
-                                        src={`https://via.placeholder.com/150x150`}  // Set dimensions to 100x100
-                                        alt="Blog Thumbnail"
-                                        className="thumbnail-image"
-                                    />
-                                </div>
-                                <div className="blog-details">
-                                    <h3 className="author">{blog.userName}</h3>
-                                    <h1 className="blog-title">{blog.title}</h1>
-                                    <p className="blog-description">{blog.description}</p>
-                                    <p className="blog-date">{blog.creationDate}</p>
-                                </div>
-                            </div>
-                        </Link>
+                    <Card key={blog.blogId} sx={{ marginBottom: 2 }}>
+                        <CardHeader
+                            avatar={<Avatar src={`${blog.authorImagePath}`} aria-label="author"> </Avatar>}
+                            title={blog.title}
+                            subheader={blog.creationDate}
+                        />
 
-                        <div className="blog-buttons">
-                            <button className="edit-btn" onClick={() => handleEditClick(blog.blogId)}>
-                                Edit
-                            </button>
-                            <button className="delete-btn" onClick={() => handleDelete(blog.blogId)}>
-                                Delete
-                            </button>
-                        </div>
-                    </div>
+                        <CardMedia
+                            component="img"
+                            height="194"
+                            image={blog.image ? blog.image : getPlaceholderImageUrl()}
+                            alt="Blog Thumbnail"
+                        />
+                        
+                        <CardContent>
+                            <Typography variant="body2" color="text.secondary">
+                                {blog.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing>
+                            {/*<IconButton aria-label="add to favorites">*/}
+                            {/*    <FavoriteIcon />*/}
+                            {/*</IconButton>*/}
+                            {/*<IconButton aria-label="share">*/}
+                            {/*    <ShareIcon />*/}
+                            {/*</IconButton>*/}
+                            <IconButton aria-label="edit" onClick={() => handleEditClick(blog.blogId)}>
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton aria-label="delete" onClick={() => handleDelete(blog.blogId)}>
+                                <DeleteIcon />
+                            </IconButton>
+                            <Link to={`/articles/${blog.blogId}`} style={{ marginLeft: 'auto' }}>
+                                <Typography variant="body2" color="text.secondary">
+                                    Перейти к статьям блога
+                                </Typography>
+                            </Link>
+                        </CardActions>
+                    </Card>
                 ))}
             </div>
 

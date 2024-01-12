@@ -1,40 +1,36 @@
 ﻿import React, { useState, useEffect } from 'react';
 import "./blog-edit.css"
-const EditBlogPage = ({ id,create}) => {
+import { TextField, Button, CircularProgress, Box, Typography } from '@mui/material';
+
+const EditBlogPage = ({ id, create }) => {
     const [blogData, setBlogData] = useState({
         title: '',
         description: '',
-        // Добавьте другие свойства блога, которые вы хотите редактировать
+        image: '', // New property for storing the base64 image data
     });
 
     const [loading, setLoading] = useState(true);
     const [jwtToken, setJwtToken] = useState('');
 
     useEffect(() => {
-        console.log(id);
         const storedToken = localStorage.getItem('jwtToken');
         if (storedToken) {
             setJwtToken(storedToken);
-            console.log(jwtToken);
         }
 
         const fetchBlog = async () => {
             try {
-                
-                console.log(id);
                 const response = await fetch(`/api/Blogs/${id}`);
                 const data = await response.json();
-                console.log(data);
 
-                // Установите данные блога в состояние
                 setBlogData({
                     blogId: data.blogId,
                     creationDate: data.creationDate,
                     title: data.title,
                     description: data.description,
                     ownerUserId: data.ownerUserId,
-                    userName: data.userName
-                    // Установите другие свойства блога в состояние
+                    userName: data.userName,
+                    image: data.image || '', // Set the default image data if available
                 });
 
                 setLoading(false);
@@ -52,12 +48,21 @@ const EditBlogPage = ({ id,create}) => {
         setBlogData({ ...blogData, [name]: value });
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setBlogData({ ...blogData, image: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const storedId = localStorage.getItem('blogid');
-     
             const response = await fetch(`/api/Blogs/${id}`, {
                 method: 'PUT',
                 headers: {
@@ -67,60 +72,71 @@ const EditBlogPage = ({ id,create}) => {
                 body: JSON.stringify(blogData),
             });
 
-           
             console.log('Blog updated successfully');
             console.log(blogData);
             create();
-            // Дополнительные действия после успешного обновления блога
-
         } catch (error) {
             console.error('Error updating blog:', error.message);
-            // Обработка ошибки, например, вывод сообщения пользователю
         }
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <CircularProgress />;
     }
 
     return (
-        <div className="edit-blog-container">
-            <h2 className="edit-blog-title">Edit Blog</h2>
-            <form className="edit-blog-form" onSubmit={handleFormSubmit}>
-                <label htmlFor="title" className="form-label">
-                    Title:
-                </label>
-                <input
-                    type="text"
-                    id="title"
+        <Box sx={{ maxWidth: 500, mx: 'auto' }}>
+            <Typography variant="h4" gutterBottom>Редактировать</Typography>
+            <form onSubmit={handleFormSubmit}>
+                <TextField
+                    fullWidth
+                    label="Название"
+                    variant="outlined"
                     name="title"
                     value={blogData.title}
                     onChange={handleInputChange}
-                    className="form-input"
+                    sx={{ mb: 2 }}
                     required
                 />
 
-                <label htmlFor="description" className="form-label">
-                    Description:
-                </label>
-                <textarea
-                    id="description"
+                <TextField
+                    fullWidth
+                    label="Описание"
+                    variant="outlined"
                     name="description"
                     value={blogData.description}
                     onChange={handleInputChange}
-                    className="form-textarea"
+                    multiline
+                    rows={4}
+                    sx={{ }}
                     required
                 />
 
-                {/* Add other form fields for editing other blog properties */}
+                <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ m: 2 }}
+                >
+                    Изображение
+                    <input
+                        type="file"
+                        name="image"
+                        hidden
+                        onChange={handleImageChange}
+                        accept="image/*"
+                    />
+                </Button>
 
-                <button type="submit" className="form-button">
-                    Update Blog
-                </button>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                >
+                    Обновить
+                </Button>
             </form>
-        </div>
+        </Box>
     );
-
 };
 
 export default EditBlogPage;

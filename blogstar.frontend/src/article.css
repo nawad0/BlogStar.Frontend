@@ -1,100 +1,56 @@
-﻿.container {
-    max-width: 1000px;
+﻿.container_a {
+    max-width: 1200px;
     margin: 20px auto;
-}
-/* Add this CSS to your stylesheets */
-
-
-.articleListWrapper {
+    /*margin-right: 0;
+    margin-left: 0;*/
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-   
-    margin-top: 20px; /* Adjust as needed for spacing */
+  
+}.container_b {
+    max-width: 1200px;
+    margin: 20px auto;
+    /*margin-right: 0;
+    margin-left: 0;*/
+    display: flex;
+    justify-content: space-between;
+  
 }
-
-.articleList {
-    /* Your existing article list styles go here */
-    flex-grow: 1; /* Allow the article list to take remaining space */
+.container {
+    max-width: 1200px;
+    margin: 0px;
+    margin-right: 0;
+    margin-left: 0;
+    display: flex;
+    justify-content: space-between;
 }
-
-.separator {
-/* Adjust the color and style as needed */
-    height: 100%; /* Match the height of the article list */
-    margin: 0 20px; /* Adjust as needed for spacing */
-}
-
-.sortOptions,
-.searchBar {
-
-    /* Your existing sorting and search bar styles go here */
-    margin-top: 20px; /* Adjust as needed for spacing */
-}
-
-
-.pageTitle {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.blogInfo {
-    text-decoration: none;
-}
-.loading {
-    font-size: 1.2rem;
-    margin-top: 20px;
-}
-
 .articleList {
     display: flex;
     flex-direction: column;
+    /*align-items: center;*/
 }
-
-.articleLink {
-    text-decoration: none;
-    color: inherit;
-}
-
-.articleItem {
+.container_list_blog {
+    max-width: 1000px;
+    margin: auto auto;
+    /*margin-right: 0;
+    margin-left: 0;*/
     display: flex;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.articleInfo {
-    flex-grow: 1;
-    padding: 15px;
-   
+    justify-content: center;
+    flex-direction: column;
+    align-items:center;
 }
 
-.articleThumbnail {
-    width: 150px;
-    float: right;
-    height: 150px;
-    padding: 10px; /* Adjust this value as needed for the desired spacing */
-    margin-left: auto; /* Push the thumbnail to the right */
+.sortOptions {
+    display: flex;
+    flex-direction: column;
+}
+.sort_container {
+    width: 30%; /* Укажите ширину, которая соответствует вашим потребностям */
+    padding: 10px; /* Добавьте отступы по вашему усмотрению */
+    /*box-sizing: border-box;*/ /* Учитывайте отступы внутри ширины контейнера */
 }
 
-    .articleThumbnail img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-.articleTitle {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.articleAuthor,
-.articleDate {
-    font-size: 1rem;
-    margin-bottom: 5px;
-    color: #888;
-}
-
-.articleContent {
-    margin-top: 10px;
-    color: #333;
+.list_container {
+    width: 65%; /* Укажите ширину, которая соответствует вашим потребностям */
+    padding: 10px; /* Добавьте отступы по вашему усмотрению */
+    box-sizing: border-box; /* Учитывайте отступы внутри ширины контейнера */
 }
